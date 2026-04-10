@@ -96,6 +96,12 @@ const addMonth = (month, shift) => {
 }
 
 const formatPKR = (amount) => `Rs. ${Number(amount || 0).toLocaleString('en-PK')}`
+const createId = () => {
+  if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
+    return crypto.randomUUID()
+  }
+  return `tx-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`
+}
 
 function App() {
   const [currentTab, setCurrentTab] = useState('home')
@@ -205,7 +211,7 @@ function App() {
       return
     }
     const month = payload.date.slice(0, 7)
-    setTransactions((prev) => [...prev, { ...payload, id: crypto.randomUUID(), month }])
+    setTransactions((prev) => [...prev, { ...payload, id: createId(), month }])
     setShowModal(false)
   }
 
